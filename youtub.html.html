@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title >Bala ji</title> 
+    <link rel = "icon" href = 
+    "logo.jpeg" 
+    />
+    <style>
+        #show_video{
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            margin-top: 80px;
+            
+
+        }
+        #logo{
+            height: 90px;
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            
+        }
+        img{
+            height:160px;
+
+        }
+        button{
+            background-color: brown;
+            height: 50px;
+            width: 150px;
+            color: aliceblue;
+            font-size: 30px;
+            margin-top: 50px;
+            border: 0px;
+            border-radius: 15px;
+
+
+
+
+        }
+        input{
+           
+            height: 50px;
+           
+            color: aliceblue;
+            font-size: 30px;
+            margin-top: 50px;
+            border: 2px solid;
+            border-radius: 15px;
+            text-align: center;
+            color: black;
+            
+
+
+
+        }
+        @media screen {
+            
+
+            
+        
+    </style>
+    
+</head>
+<body>
+    <div id="logo">
+        <div id="logoimg"> <img src="logo.jpeg" alt=""></div>
+        <div id="input">
+            <input type="text" id="query" placeholder="Search" onkeyup="searchVideos()">
+            <button  onclick="searchVideos()" >Search</button>
+            
+        </div>
+        <div>
+
+        </div>
+        
+    </div>
+    
+    
+    <div id="show_video"> 
+
+    </div>
+    
+</body>
+</html>
+<script>
+    //https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=30&key=[YOUR_API_KEY]`
+    const API='AIzaSyC2SKyB6-x7GdorypUHGbvP3K5yDYrnm9M';
+    const searchVideos = async () =>{
+        try{
+            const q=document.getElementById("query").value;
+            const res=await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=30&q=${q}%202&key=${API}`)
+              
+            const data =await res.json();
+            append(data.items)
+
+           // console.log(data.items);
+        }
+        catch(err){
+            console.log(err);
+        }
+    };
+
+    const append=(videos)=>{
+        let show_video=document.getElementById("show_video");
+
+        videos.forEach(({ id:{videoId},snippet:{title}}) => {
+            let div=document.createElement("div")
+            let iframe =document.createElement("iframe");
+            iframe.src=`https://www.youtube.com/embed/${videoId}`;
+           // iframe.width="40%";
+           // iframe.height="40%";
+            
+            iframe.allow="fullscreen";
+            let name=document.createElement("h4");
+            name.innerText=title;
+            div.append(iframe,name)
+            show_video.append(div);
+
+
+        });
+
+    };
+   // <iframe width="560" height="315" src="https://www.youtube.com/embed/ac-fVFB8-D0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+</script>
